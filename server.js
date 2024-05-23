@@ -9,12 +9,14 @@ const app = express()
 const expressLayouts = require("express-ejs-layouts")
 const indexrouter = require('./routes/index')
 const authourrouter = require('./routes/author')
+const bookrouter = require('./routes/book')
 const bodyParser = require('body-parser')
-
+const methodOverride = require('method-override')
 app.set("view engine", "ejs")
 app.set('views', './views')
 app.set('layout', 'layouts/layout')
 
+app.use(methodOverride('_method'))
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({limit:'10mb', extended:false}))
@@ -27,7 +29,8 @@ mongoose.connect(process.env.DATABASE_URL)
 // mongoose.
 app.use('/', indexrouter)
 app.use('/authors', authourrouter);
+app.use('/books', bookrouter)
 // app.get('/', (req, res) => {
 //     res.render('index')
 // })
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 3001)
